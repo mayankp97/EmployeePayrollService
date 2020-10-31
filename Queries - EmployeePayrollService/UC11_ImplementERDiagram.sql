@@ -1,0 +1,34 @@
+USE [payroll_service]
+GO
+
+CREATE TABLE Department
+(
+	DepartmentId INT NOT NULL PRIMARY KEY,
+	Name VARCHAR(255) NOT NULL,
+)
+GO
+
+CREATE TABLE Employee 
+(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	Name VARCHAR(255),
+	Address VARCHAR(255) DEFAULT 'HOME',
+	DepartmentId INT NOT NULL FOREIGN KEY REFERENCES Department(DepartmentId),
+	Gender VARCHAR(1) NOT NULL,
+	StartDate DATE 
+)
+GO
+
+CREATE TABLE Payroll
+(
+	Id INT NOT NULL PRIMARY KEY FOREIGN KEY REFERENCES Employee(Id),
+	BasicPay FLOAT,
+	Deductions FLOAT,
+	TaxablePay FLOAT,
+	Tax FLOAT,
+	NetPay FLOAT
+)
+
+GO
+
+
