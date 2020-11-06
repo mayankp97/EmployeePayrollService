@@ -8,7 +8,11 @@ namespace EmployeePayrollService
         {
             Console.WriteLine("Welcome to Employee Payroll Service!");
 
-            EmployeeRepo.GetAllEmployee();
+            //EmployeeRepo.GetAllEmployee();
+            var salaryUpdateModel = new SalaryUpdateModel { SalaryId = 1, EmployeeSalary = 75001 };
+            var salaryObj = new Salary();
+            var salary = salaryObj.UpdateEmployeeSalary(salaryUpdateModel);
+            Console.WriteLine(salary);
         }
     }
 }
