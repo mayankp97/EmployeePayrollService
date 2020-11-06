@@ -62,7 +62,6 @@ namespace EmployeePayrollService
             {
                 SalaryConnection.Close();
             }
-            return salary;
         }
     }
 
