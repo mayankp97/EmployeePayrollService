@@ -23,9 +23,16 @@ namespace EmployeePayrollService
                     SalaryDetailModel displayModel = new SalaryDetailModel();
                     SqlCommand command = new SqlCommand("spUpdateEmployeeSalary", SalaryConnection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
+                    var cmd = new SqlCommand("Select Id from Employee where Name='Terissa'", SalaryConnection);
+                    SalaryConnection.Open();
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                        salaryUpdateModel.SalaryId = Convert.ToInt32(reader.GetInt32(0));
+                reader.Close();
                     command.Parameters.AddWithValue("@id", salaryUpdateModel.SalaryId);
                     command.Parameters.AddWithValue("@salary", salaryUpdateModel.EmployeeSalary);
-                    SalaryConnection.Open();
                     SqlDataReader dr = command.ExecuteReader();
                     if (dr.HasRows)
                     {
@@ -45,6 +52,7 @@ namespace EmployeePayrollService
                     }
 
                 }
+            return salary;
             }
             catch (Exception e)
             {
