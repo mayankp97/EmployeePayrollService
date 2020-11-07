@@ -165,6 +165,7 @@ namespace EmployeePayrollService
 				var reader = sqlCommand.ExecuteReader();
 				if (reader.Read())
 				{
+
 					var model = new EmployeeModel { EmployeeName = reader.GetString(1) };
 					updatedEmployeePayroll.employeeModel = model;
 					Console.WriteLine("Employee {0} Added Successfully.", updatedEmployeePayroll.employeeModel.EmployeeName);
