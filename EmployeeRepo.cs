@@ -64,7 +64,7 @@ namespace EmployeePayrollService
 				var employeeModel = new EmployeeModel();
 				using (connection)
 				{
-					var query = @"Select * from employee_payroll where start_date > @startDate AND start_date < @endDate";
+					var query = @"Select * from Employee Inner Join Payroll On Employee.Id = Payroll.Id where StartDate > @startDate AND StartDate < @endDate";
 					var sqlCommand = new SqlCommand(query, connection);
 					sqlCommand.Parameters.AddWithValue("@startDate", startDate);
 					sqlCommand.Parameters.AddWithValue("@endDate", endDate);
@@ -77,16 +77,15 @@ namespace EmployeePayrollService
 						{
 							employeeModel.EmployeeID = dataReader.GetInt32(0);
 							employeeModel.EmployeeName = dataReader.GetString(1);
-							employeeModel.Salary = dataReader.GetInt32(2);
-							employeeModel.StartDate = dataReader.GetDateTime(3);
-							employeeModel.Gender = Convert.ToChar(dataReader.GetString(4));
-							employeeModel.PhoneNumber = dataReader.GetString(5);
-							employeeModel.Address = dataReader.GetString(6);
-							employeeModel.Department = dataReader.GetString(7);
-							employeeModel.BasicPay = dataReader.GetInt32(8);
-							employeeModel.TaxablePay = dataReader.GetInt32(9);
-							employeeModel.Tax = dataReader.GetInt32(10);
-							employeeModel.NetPay = dataReader.GetInt32(11);
+							employeeModel.StartDate = dataReader.GetDateTime(6);
+							employeeModel.Gender = Convert.ToChar(dataReader.GetString(5));
+							employeeModel.PhoneNumber = dataReader.GetString(3);
+							employeeModel.Address = dataReader.GetString(2);
+							employeeModel.Salary = dataReader.GetDouble(8);
+							employeeModel.BasicPay = dataReader.GetDouble(9);
+							employeeModel.TaxablePay = dataReader.GetDouble(11);
+							employeeModel.Tax = dataReader.GetDouble(12);
+							employeeModel.NetPay = dataReader.GetDouble(13);
 							employeeModel.Display();
 
 						}
@@ -115,7 +114,7 @@ namespace EmployeePayrollService
 									AVG(salary) AS avg_salary,
 									MIN(salary) AS min_salary,
 									MAX(salary) AS max_salary
-									FROM [dbo].[employee_payroll]
+									from Employee Inner Join Payroll On Employee.Id = Payroll.Id
 									WHERE [gender] = 'M' 
 									GROUP BY [gender]";
 				var sqlCommand = new SqlCommand(query, connection);
@@ -126,9 +125,9 @@ namespace EmployeePayrollService
 					while (reader.Read())
 					{
 						Console.WriteLine("Number of males : {0}", reader.GetInt32(0));
-						Console.WriteLine("Average Salary : {0}", reader.GetInt32(1));
-						Console.WriteLine("Minimum Salary : {0}", reader.GetInt32(2));
-						Console.WriteLine("Maximum Salary : {0}", reader.GetInt32(3));
+						Console.WriteLine("Average Salary : {0}", reader.GetDouble(1));
+						Console.WriteLine("Minimum Salary : {0}", reader.GetDouble(2));
+						Console.WriteLine("Maximum Salary : {0}", reader.GetDouble(3));
 
 					}
 				}
