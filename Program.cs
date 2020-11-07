@@ -20,6 +20,10 @@ namespace EmployeePayrollService
             EmployeeRepo.GetAllEmployeeInDateRange(startDate, endDate);
             */
             //EmployeeRepo.ExecuteAggregateFunctions();
+            var empModel = new EmployeeModel { EmployeeName = "Iron Man", Salary = 1000000,Gender='M',PhoneNumber="5454545",
+                                                StartDate=Convert.ToDateTime("01/01/2019"),Address="In the sky full of starts",Department="Legal"};
+            var employeePayroll = new EmployeePayroll { employeeModel = empModel};
+            EmployeeRepo.AddEmployee(employeePayroll);
         }
     }
 }

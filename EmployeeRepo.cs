@@ -146,5 +146,41 @@ namespace EmployeePayrollService
 				connection.Close();
 			}
 		}
+
+		public static void AddEmployee(EmployeePayroll employeePayroll)
+		{
+			var updatedEmployeePayroll = new EmployeePayroll();
+			try
+			{
+				var sqlCommand = new SqlCommand("SpAddEmployeeDetails", connection);
+				sqlCommand.CommandType = CommandType.StoredProcedure;
+				sqlCommand.Parameters.AddWithValue("@EmployeeName", employeePayroll.employeeModel.EmployeeName);
+				sqlCommand.Parameters.AddWithValue("@Salary", (float)employeePayroll.employeeModel.Salary);
+				sqlCommand.Parameters.AddWithValue("@StartDate", employeePayroll.employeeModel.StartDate);
+				sqlCommand.Parameters.AddWithValue("@Gender", employeePayroll.employeeModel.Gender);
+				sqlCommand.Parameters.AddWithValue("@PhoneNumber", employeePayroll.employeeModel.PhoneNumber);
+				sqlCommand.Parameters.AddWithValue("@Address", employeePayroll.employeeModel.Address);
+				sqlCommand.Parameters.AddWithValue("@Department", employeePayroll.employeeModel.Department);
+				connection.Open();
+				var reader = sqlCommand.ExecuteReader();
+				if (reader.Read())
+				{
+					var model = new EmployeeModel { EmployeeName = reader.GetString(1) };
+					updatedEmployeePayroll.employeeModel = model;
+					Console.WriteLine("Employee {0} Added Successfully.", updatedEmployeePayroll.employeeModel.EmployeeName);
+				}
+
+			}
+			catch (Exception e)
+			{
+
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
+			}
+			finally
+			{
+				connection.Close();
+			}
+		}
 	}
 }
