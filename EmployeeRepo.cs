@@ -104,5 +104,47 @@ namespace EmployeePayrollService
                 connection.Close();
             }
         }
+
+        public static void ExecuteAggregateFunctions()
+        {
+            try
+            {
+                var employeeModel = new EmployeeModel();
+                var query = @"SELECT  COUNT(*) AS number_of_males,
+		                            AVG(salary) AS avg_salary,
+		                            MIN(salary) AS min_salary,
+		                            MAX(salary) AS max_salary
+                                    FROM [dbo].[employee_payroll]
+                                    WHERE [gender] = 'M' 
+                                    GROUP BY [gender]";
+                var sqlCommand = new SqlCommand(query, connection);
+                connection.Open();
+                var reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine("Number of males : {0}", reader.GetInt32(0));
+                        Console.WriteLine("Average Salary : {0}", reader.GetInt32(1));
+                        Console.WriteLine("Minimum Salary : {0}", reader.GetInt32(2));
+                        Console.WriteLine("Maximum Salary : {0}", reader.GetInt32(3));
+
+                    }
+                }
+
+                else
+                    Console.WriteLine("Data Not Found");
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }

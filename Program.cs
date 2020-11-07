@@ -13,10 +13,11 @@ namespace EmployeePayrollService
             //var salaryObj = new Salary();
             //var salary = salaryObj.UpdateEmployeeSalary(salaryUpdateModel);
             //Console.WriteLine(salary);
-            var startDate = Convert.ToDateTime("01/01/2018");
-            var endDate = Convert.ToDateTime("01/01/2019");
+            //var startDate = Convert.ToDateTime("01/01/2018");
+            //var endDate = Convert.ToDateTime("01/01/2019");
 
-            EmployeeRepo.GetAllEmployeeInDateRange(startDate, endDate);
+            //EmployeeRepo.GetAllEmployeeInDateRange(startDate, endDate);
+            EmployeeRepo.ExecuteAggregateFunctions();
         }
     }
 }
