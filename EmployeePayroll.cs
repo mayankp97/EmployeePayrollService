@@ -11,5 +11,10 @@ namespace EmployeePayrollService
         public List<string> Departments;
 
         public Payroll payroll;
+
+        public EmployeePayroll()
+        {
+            employeeModel = new EmployeeModel();
+        }
     }
 }

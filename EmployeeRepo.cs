@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace EmployeePayrollService
 {
@@ -10,12 +11,21 @@ namespace EmployeePayrollService
 	{
 
 		public static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=payroll_service;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-		static SqlConnection connection = new SqlConnection(connectionString);
+		public static SqlConnection connection = new SqlConnection(connectionString);
+
+		public static void SetConnection()
+        {
+			connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=payroll_service;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+			connection = new SqlConnection(connectionString);
+		}
+
+		public static List<EmployeePayroll> employeePayrolls;
 		public static void GetAllEmployee()
 		{
+			employeePayrolls = new List<EmployeePayroll>();
 			try
 			{
-				var employeeModel = new EmployeeModel();
+				
 				using (connection)
 				{
 					var query = @"SELECT *
@@ -28,28 +38,34 @@ namespace EmployeePayrollService
 					{
 						while (dataReader.Read())
 						{
+							var employeePayroll = new EmployeePayroll();
+							var employeeModel = employeePayroll.employeeModel;
 							employeeModel.EmployeeID = dataReader.GetInt32(0);
 							employeeModel.EmployeeName = dataReader.GetString(1);
 							employeeModel.StartDate = dataReader.GetDateTime(6);
 							employeeModel.Gender = Convert.ToChar(dataReader.GetString(5));
 							employeeModel.PhoneNumber = dataReader.GetString(3);
 							employeeModel.Address = dataReader.GetString(2);
-							employeeModel.Salary = dataReader.GetDouble(8);
-							employeeModel.BasicPay = dataReader.GetDouble(9);
-							employeeModel.TaxablePay = dataReader.GetDouble(11);
-							employeeModel.Tax = dataReader.GetDouble(12);
-							employeeModel.NetPay = dataReader.GetDouble(13);
-							employeeModel.Display();
+							employeeModel.Salary = dataReader.GetDouble(10);
+							employeeModel.BasicPay = dataReader.GetDouble(11);
+							employeeModel.TaxablePay = dataReader.GetDouble(13);
+							employeeModel.Tax = dataReader.GetDouble(14);
+							employeeModel.NetPay = dataReader.GetDouble(14);
 
+							employeeModel.Display();
+							employeePayrolls.Add(employeePayroll);
 						}
 					}
 					else
 						Console.WriteLine("No Data Found");
+					dataReader.Close();
+					connection.Close();
 
 				}
 			}
 			catch (Exception ex)
 			{
+				Console.WriteLine(ex.StackTrace);
 				throw new Exception(ex.Message);
 			}
 			finally
@@ -139,7 +155,8 @@ namespace EmployeePayrollService
 			catch (Exception e)
 			{
 
-				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
+				throw new Exception(e.Message);
 			}
 			finally
 			{
@@ -175,13 +192,39 @@ namespace EmployeePayrollService
 			catch (Exception e)
 			{
 
-				Console.WriteLine(e.Message);
 				Console.WriteLine(e.StackTrace);
+				throw new Exception(e.Message);
 			}
 			finally
 			{
 				connection.Close();
 			}
 		}
+		public static void RemoveEmployee(int Id)
+		{
+			SetConnection();
+			var emp = employeePayrolls.Where(e => e.employeeModel.EmployeeID==Id).ToList()[0];
+			employeePayrolls.Remove(emp);
+			try
+			{
+				using (connection)
+				{
+					var query = @"Update Employee Set Is_Active = 0 where Id = @Id";
+					var sqlCommand = new SqlCommand(query, connection);
+					sqlCommand.Parameters.AddWithValue("@Id", Id);
+					connection.Open();
+					sqlCommand.ExecuteNonQuery();
+					Console.WriteLine("Employee Deleted");
+					connection.Close();
+				}
+			}
+			catch (Exception e)
+			{
+
+				Console.WriteLine(e.StackTrace);
+				throw new Exception(e.Message);
+			}
+		}
+
 	}
 }
