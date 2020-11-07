@@ -18,7 +18,9 @@ namespace EmployeePayrollService
                 var employeeModel = new EmployeeModel();
                 using (connection)
                 {
-                    var query = @"Select * from employee_payroll";
+                    var query = @"SELECT *
+                                    FROM [dbo].[Employee] AS emp INNER JOIN [dbo].[Payroll] AS pay
+                                    ON emp.Id = pay.Id";
                     var sqlCommand = new SqlCommand(query, connection);
                     connection.Open();
                     var dataReader = sqlCommand.ExecuteReader();
@@ -28,16 +30,15 @@ namespace EmployeePayrollService
                         {
                             employeeModel.EmployeeID = dataReader.GetInt32(0);
                             employeeModel.EmployeeName = dataReader.GetString(1);
-                            employeeModel.Salary = dataReader.GetInt32(2);
-                            employeeModel.StartDate = dataReader.GetDateTime(3);
-                            employeeModel.Gender = Convert.ToChar(dataReader.GetString(4));
-                            employeeModel.PhoneNumber = dataReader.GetString(5);
-                            employeeModel.Address = dataReader.GetString(6);
-                            employeeModel.Department = dataReader.GetString(7);
-                            employeeModel.BasicPay = dataReader.GetInt32(8);
-                            employeeModel.TaxablePay = dataReader.GetInt32(9);
-                            employeeModel.Tax = dataReader.GetInt32(10);
-                            employeeModel.NetPay = dataReader.GetInt32(11);
+                            employeeModel.StartDate = dataReader.GetDateTime(6);
+                            employeeModel.Gender = Convert.ToChar(dataReader.GetString(5));
+                            employeeModel.PhoneNumber = dataReader.GetString(3);
+                            employeeModel.Address = dataReader.GetString(2);
+                            employeeModel.Salary = dataReader.GetDouble(8);
+                            employeeModel.BasicPay = dataReader.GetDouble(9);
+                            employeeModel.TaxablePay = dataReader.GetDouble(11);
+                            employeeModel.Tax = dataReader.GetDouble(12);
+                            employeeModel.NetPay = dataReader.GetDouble(13);
                             employeeModel.Display();
 
                         }
