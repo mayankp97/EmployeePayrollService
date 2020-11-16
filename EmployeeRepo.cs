@@ -14,7 +14,7 @@ namespace EmployeePayrollService
 		public static SqlConnection connection = new SqlConnection(connectionString);
 
 		public static void SetConnection()
-        {
+		{
 			connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=payroll_service;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 			connection = new SqlConnection(connectionString);
 		}
@@ -164,11 +164,21 @@ namespace EmployeePayrollService
 			}
 		}
 
+		public static void AddMultipleEmployees(List<EmployeePayroll> employeePayrolls)
+		{
+			var startTime = DateTime.Now;
+			foreach (var employeePayroll in employeePayrolls)
+				AddEmployee(employeePayroll);
+			var endTime = DateTime.Now;
+			Console.WriteLine("Time taken : {0}", endTime - startTime);
+		}
+
 		public static void AddEmployee(EmployeePayroll employeePayroll)
 		{
 			var updatedEmployeePayroll = new EmployeePayroll();
 			try
 			{
+				SetConnection();
 				var sqlCommand = new SqlCommand("SpAddEmployeeDetails", connection);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
 				sqlCommand.Parameters.AddWithValue("@EmployeeName", employeePayroll.employeeModel.EmployeeName);
