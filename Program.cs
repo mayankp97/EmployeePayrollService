@@ -10,9 +10,10 @@ namespace EmployeePayrollService
             Console.WriteLine("Welcome to Employee Payroll Service!");
 
             EmployeeRepo.GetAllEmployee();
-            //var salaryUpdateModel = new SalaryUpdateModel { SalaryId = 1, EmployeeSalary = 30000000 };
-            //var salaryObj = new Salary();
-            //var salary = salaryObj.UpdateEmployeeSalary(salaryUpdateModel);
+            var salaryUpdateModel = new SalaryUpdateModel { SalaryId = 1, EmployeeSalary = 30000000 };
+            var salaryObj = new Salary();
+            var salary = salaryObj.UpdateEmployeeSalary(salaryUpdateModel);
+            salaryObj.UpdateMultipleSalariesUsingThreads(new List<SalaryUpdateModel> { salaryUpdateModel });
             //Console.WriteLine(salary);
             /*
             //Retreiving Employees In a date range
@@ -35,7 +36,7 @@ namespace EmployeePayrollService
             */
 
 
-            
+            /*
             //Adding Multiple Employees
             var employees = new List<EmployeePayroll> {new EmployeePayroll { employeeModel = new EmployeeModel { EmployeeName = "Steel Man", Salary = 1000000,Gender='M',PhoneNumber="5454545",
                                                 StartDate=Convert.ToDateTime("01/01/2019"),Address="In the sky full of starts",Department="Legal"} },
@@ -45,6 +46,7 @@ namespace EmployeePayrollService
                                                 StartDate=Convert.ToDateTime("01/01/2019"),Address="In the sky full of starts",Department="Legal"} } };
             EmployeeRepo.AddMultipleEmployees(employees);
             EmployeeRepo.AddMultipleEmployeesUsingThreads(employees);
+            */
             
 
         }

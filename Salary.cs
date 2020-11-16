@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EmployeePayrollService
 {
@@ -12,6 +13,15 @@ namespace EmployeePayrollService
             return new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=payroll_service;Integrated Security=True");
         }
 
+        public void UpdateMultipleSalariesUsingThreads(List<SalaryUpdateModel> salaryUpdateModels)
+        {
+            foreach(var salaryUpdateModel in salaryUpdateModels)
+            {
+                var thread = new Task(() => UpdateEmployeeSalary(salaryUpdateModel));
+                thread.Start();
+                thread.Wait();
+            }
+        }
         public int UpdateEmployeeSalary(SalaryUpdateModel salaryUpdateModel)
         {
             SqlConnection SalaryConnection = ConnectionSetup();
