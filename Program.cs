@@ -31,8 +31,10 @@ namespace EmployeePayrollService
             */
             /*
             //Removing an employee
-            EmployeeRepo.RemoveEmployee(2);
+            EmployeeRepo.RemoveEmployee(5);
             */
+
+
             
             //Adding Multiple Employees
             var employees = new List<EmployeePayroll> {new EmployeePayroll { employeeModel = new EmployeeModel { EmployeeName = "Steel Man", Salary = 1000000,Gender='M',PhoneNumber="5454545",
@@ -42,7 +44,9 @@ namespace EmployeePayrollService
                                                 new EmployeePayroll { employeeModel = new EmployeeModel { EmployeeName = "Aluminium Man", Salary = 1000000,Gender='M',PhoneNumber="5454545",
                                                 StartDate=Convert.ToDateTime("01/01/2019"),Address="In the sky full of starts",Department="Legal"} } };
             EmployeeRepo.AddMultipleEmployees(employees);
+            EmployeeRepo.AddMultipleEmployeesUsingThreads(employees);
             
+
         }
     }
 }

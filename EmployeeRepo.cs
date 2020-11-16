@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EmployeePayrollService
 {
@@ -170,9 +171,20 @@ namespace EmployeePayrollService
 			foreach (var employeePayroll in employeePayrolls)
 				AddEmployee(employeePayroll);
 			var endTime = DateTime.Now;
-			Console.WriteLine("Time taken : {0}", endTime - startTime);
+			Console.WriteLine("Time taken without threads : {0}", endTime - startTime);
 		}
-
+		public static void AddMultipleEmployeesUsingThreads(List<EmployeePayroll> employeePayrolls)
+		{
+			var startTime = DateTime.Now;
+			foreach (var employeePayroll in employeePayrolls)
+			{
+				var thread = new Task(() => AddEmployee(employeePayroll));
+				thread.Start();
+				thread.Wait();
+			}
+			var endTime = DateTime.Now;
+			Console.WriteLine("Time taken with Threads : {0}", endTime - startTime);
+		}
 		public static void AddEmployee(EmployeePayroll employeePayroll)
 		{
 			var updatedEmployeePayroll = new EmployeePayroll();
