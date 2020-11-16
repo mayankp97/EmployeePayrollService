@@ -181,6 +181,7 @@ namespace EmployeePayrollService
 				var thread = new Task(() => AddEmployee(employeePayroll));
 				thread.Start();
 				thread.Wait();
+				
 			}
 			var endTime = DateTime.Now;
 			Console.WriteLine("Time taken with Threads : {0}", endTime - startTime);
