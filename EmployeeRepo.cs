@@ -10,7 +10,7 @@ namespace EmployeePayrollService
 {
 	class EmployeeRepo
 	{
-
+		public static int counter = 0;
 		public static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=payroll_service;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 		public static SqlConnection connection = new SqlConnection(connectionString);
 
@@ -175,6 +175,7 @@ namespace EmployeePayrollService
 		}
 		public static void AddMultipleEmployeesUsingThreads(List<EmployeePayroll> employeePayrolls)
 		{
+			counter = 0;
 			var startTime = DateTime.Now;
 			foreach (var employeePayroll in employeePayrolls)
 			{
@@ -203,6 +204,8 @@ namespace EmployeePayrollService
 				sqlCommand.Parameters.AddWithValue("@Department", employeePayroll.employeeModel.Department);
 				connection.Open();
 				var reader = sqlCommand.ExecuteReader();
+				counter++;
+				Console.WriteLine("Counter : {0}", counter);
 				if (reader.Read())
 				{
 
