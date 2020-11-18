@@ -106,5 +106,14 @@ namespace EmployeePayrollServiceTests
             var dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
             Assert.AreEqual("0", dataResponse.Salary);
         }
+        [Test]
+        public void GivenID_OnDelete_ReturnsSuccessStatus()
+        {
+            var request = new RestRequest("employees/5", Method.DELETE);
+
+            var response = client.Execute(request);
+
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        }
     }
 }
