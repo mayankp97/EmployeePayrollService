@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EmployeePayrollServiceTests\**" />
+    <EmbeddedResource Remove="EmployeePayrollServiceTests\**" />
+    <None Remove="EmployeePayrollServiceTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
