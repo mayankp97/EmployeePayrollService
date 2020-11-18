@@ -65,5 +65,30 @@ namespace EmployeePayrollServiceTests
             Assert.AreEqual(employee.Name, dataResponse.Name);
             Assert.AreEqual(employee.Salary, dataResponse.Salary);
         }
+        [Test]
+        public void GivenEmloyeeList_OnGet_ReturnsTheAddedEmployees()
+        {
+            var employees = new List<Employee> {new Employee { Name = "Mr. Tomato", Salary = "80000" },
+                new Employee { Name = "Mr. Brinjal", Salary = "80000" } };
+            foreach (var employee in employees)
+            {
+
+
+                var request = new RestRequest("/employees", Method.POST);
+
+
+                var jObjectBody = new JObject();
+                jObjectBody.Add("name", employee.Name);
+                jObjectBody.Add("salary", employee.Salary);
+                request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
+
+                var response = client.Execute(request);
+
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+                var dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+                Assert.AreEqual(employee.Name, dataResponse.Name);
+                Assert.AreEqual(employee.Salary, dataResponse.Salary);
+            }
+        }
     }
 }
