@@ -90,5 +90,21 @@ namespace EmployeePayrollServiceTests
                 Assert.AreEqual(employee.Salary, dataResponse.Salary);
             }
         }
+        [Test]
+        public void GivenEmployee_OnUpdate_ReturnsTheUpdatedEmployee()
+        {
+            var request = new RestRequest("employees/5", Method.PUT);
+
+            var jObjectBody = new JObject();
+            jObjectBody.Add("name", "Lisa");
+            jObjectBody.Add("salary", "0");
+            request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            var dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual("0", dataResponse.Salary);
+        }
     }
 }
